@@ -1,9 +1,10 @@
 body {
-    background: #8E0E00;
-    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);
-    background: linear-gradient(to right, #1F1C18, #8E0E00);
+    background: #4B79A1;
+    background: -webkit-linear-gradient(to right, #283E51, #4B79A1);
+    background: linear-gradient(to right, #283E51, #4B79A1);
 }
 
 .titulo {
     font-size: 1.8rem;
+    font-family: 'Montserrat', sans-serif;
 }
