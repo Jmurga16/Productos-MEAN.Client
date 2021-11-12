@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Producto } from 'src/app/models/producto';
+import { ProductoService } from 'src/app/services/producto.service';
 
 @Component({
   selector: 'app-crear-producto',
@@ -12,11 +13,15 @@ import { Producto } from 'src/app/models/producto';
 export class CrearProductoComponent implements OnInit {
 
   productoForm: FormGroup;
+  titulo = 'Crear Producto'
+  id: string | null;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private productoService: ProductoService,
+    private aRouter: ActivatedRoute
   ) {
     this.productoForm = this.fb.group({
       producto: ['', Validators.required],
@@ -24,16 +29,17 @@ export class CrearProductoComponent implements OnInit {
       ubicacion: ['', Validators.required],
       precio: ['', Validators.required],
     })
+    this.id = this.aRouter.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
-
+    this.esEditar()
   }
 
   agregarProducto() {
-    console.log(this.productoForm)
+    //console.log(this.productoForm)
 
-    console.log(this.productoForm.get('producto')?.value);
+    //console.log(this.productoForm.get('producto')?.value);
 
     const PRODUCTO: Producto = {
       nombre: this.productoForm.get('producto')?.value,
@@ -42,10 +48,44 @@ export class CrearProductoComponent implements OnInit {
       precio: this.productoForm.get('precio')?.value,
     }
 
-    console.log(PRODUCTO)
-    this.toastr.success('El producto fue registrado con exito!', 'Producto Registrado!');
+    //console.log(PRODUCTO)
 
-    this.router.navigate(['/']);
+    if (this.id != null) {
+      //Editamos
+      this.productoService.editarProducto(this.id, PRODUCTO).subscribe(data => {
+        this.toastr.info('El producto fue actualizado con exito!', 'Producto Actualizado!');
+        this.router.navigate(['/']);
+      })
+    }
+    else {
+      this.productoService.guardarProducto(PRODUCTO).subscribe(
+        data => {
+          this.toastr.success('El producto fue registrado con exito!', 'Producto Registrado!');
+          this.router.navigate(['/']);
+        });
+    }
+
+
+
+
+
   }
+
+  esEditar() {
+    if (this.id !== null) {
+      this.titulo = 'Editar producto'
+      this.productoService.obtenerProducto(this.id).subscribe(data => {
+        this.productoForm.setValue({
+          producto: data.nombre,
+          categoria: data.categoria,
+          ubicacion: data.ubicacion,
+          precio: data.precio
+        })
+      })
+    }
+  }
+
+
+
 
 }
