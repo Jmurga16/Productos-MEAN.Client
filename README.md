@@ -1,11 +1,10 @@
 # Cliente Productos - MEAN
 
 1. Clonar en Visual Studio Code.
-2. Definir la ruta a base de datos Mongo en variables.env
-3. Abrir consola del visual studio.
-4. Ejecutar el comando "npm i" o "npm i --legacy-peer-deps" (si tiene otra versión de node.
-5. Ejecutar el comando "ng serve"
-6. Abrir la pagina http://localhost:4200/
+2. Abrir consola del visual studio.
+3. Ejecutar el comando "npm i" o "npm i --legacy-peer-deps" (si tiene otra versión de node).
+4. Ejecutar el comando "ng serve"
+5. Abrir la pagina http://localhost:4200/
 
 Proyecto generado en [Angular CLI](https://github.com/angular/angular-cli) version 13.0.1.
 
